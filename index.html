@@ -1,1 +1,49 @@
-Test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Prediction</title>
+</head>
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="predictImage()">Predict Image</button>
+    <div id="predictionResult"></div>
+
+    <script>
+        async function predictImage() {
+            const imageInput = document.getElementById('imageInput');
+            const predictionResult = document.getElementById('predictionResult');
+
+            if (!imageInput.files || imageInput.files.length === 0) {
+                alert('Please select an image.');
+                return;
+            }
+
+            const imageFile = imageInput.files[0];
+
+            try {
+                // Replace 'YOUR_HUGGING_FACE_API_ENDPOINT' with the actual API endpoint
+                const apiUrl = 'YOUR_HUGGING_FACE_API_ENDPOINT';
+                const formData = new FormData();
+                formData.append('image', imageFile);
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Prediction failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                predictionResult.innerHTML = `<p>Prediction Result: ${JSON.stringify(result)}</p>`;
+            } catch (error) {
+                console.error('Error predicting image:', error);
+                predictionResult.innerHTML = '<p>Error predicting image. Please try again.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

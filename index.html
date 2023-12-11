@@ -9,8 +9,10 @@
     <input type="file" id="imageInput" accept="image/*">
     <button onclick="predictImage()">Predict Image</button>
     <div id="predictionResult"></div>
+    <p>Version 1</p>
 
     <script>
+        import { client } from "@gradio/client";
         async function predictImage() {
             const imageInput = document.getElementById('imageInput');
             const predictionResult = document.getElementById('predictionResult');
@@ -24,20 +26,25 @@
 
             try {
                 // Replace 'YOUR_HUGGING_FACE_API_ENDPOINT' with the actual API endpoint
-                const apiUrl = 'https://andershqst-fastai-lesson2.hf.space/--replicas/ds4pw/infer_image';
-                const formData = new FormData();
-                formData.append('image', imageFile);
+                const app = await client("https://andershqst-fastai-lesson2.hf.space/--replicas/ds4pw/");
+                const result = await app.predict("/infer_image", [
+				    imageFile, 	// blob in 'parameter_13' Image component
+	            ]);
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    body: formData,
-                });
+                // const apiUrl = 'https://andershqst-fastai-lesson2.hf.space/--replicas/ds4pw/';
+                // const formData = new FormData();
+                // formData.append('image', imageFile);
+
+                // const response = await fetch(apiUrl, {
+                //     method: 'POST',
+                //     body: formData,
+                // });
 
                 if (!response.ok) {
                     throw new Error(`Prediction failed with status: ${response.status}`);
                 }
 
-                const result = await response.json();
+                // const result = await response.json();
                 predictionResult.innerHTML = `<p>Prediction Result: ${JSON.stringify(result)}</p>`;
             } catch (error) {
                 console.error('Error predicting image:', error);

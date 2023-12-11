@@ -6,10 +6,6 @@
     <title>Image Prediction</title>
 </head>
 <body>
-    <input type="file" id="imageInput" accept="image/*">
-    <button onclick="predictImage()">Predict Image</button>
-    <div id="predictionResult"></div>
-    <p>Version 3</p>
 
     <script type="module">
         import { client } from 'https://cdn.jsdelivr.net/npm/@gradio/client';
@@ -52,5 +48,9 @@
             }
         }
     </script>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="predictImage()">Predict Image</button>
+    <div id="predictionResult"></div>
+    <p>Version 3</p>
 </body>
 </html>
